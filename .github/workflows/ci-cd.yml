@@ -21,8 +21,6 @@ jobs:
         with:
           distribution: temurin
           java-version: "17"
-          cache: maven
-          cache-dependency-path: demo-app/pom.xml
 
       - name: Run backend tests
         working-directory: demo-app
