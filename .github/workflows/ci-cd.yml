@@ -7,7 +7,6 @@ on:
   workflow_dispatch:
 
 permissions:
-  id-token: write # BẮT BUỘC: để GitHub Actions cấp JWT OIDC token cho AWS
   contents: read
 
 jobs:
@@ -99,12 +98,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Xác thực OIDC với AWS không cần Access Key
+     # Dùng Access Key trực tiếp, không cần OIDC / role-to-assume
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-          aws-region: ap-southeast-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
       # Gửi lệnh deploy thẳng vào EC2 qua SSM Run Command
       - name: Trigger deployment via AWS SSM Run Command
